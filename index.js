@@ -18,15 +18,16 @@ var db = admin.firestore()
 app.use(bodyParser.json())
 
 app.post('/webhook', (req,res) => {
-    console.log("Webhook posted data: ", req.body)
+    console.log("Webhook posted data: ", req.body);
     const createdAt = new Date();
     const docRef = db.collection('sensor-data').doc(createdAt.toISOString());
-    const firebaseDoc = docRef.set(req.body);
+    //const firebaseDoc = docRef.set(req.body);
+    const firebaseDoc = docRef.set({ temperature: 70 });
     res.json({
         status: "ok",
         createdAt,
         firebaseDoc
-    })
+    });
     res.end()
 })
 
