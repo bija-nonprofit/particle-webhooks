@@ -3,43 +3,38 @@ const bodyParser = require('body-parser')
 const firebase = require('firebase');
 
 const port = process.env.PORT || 3000
-const app = express()
+const app = express();
 
-// Set up firebase for database access.
-//const admin = require("firebase-admin")
 
-/*
-const serviceAccount = require("./particle-webhooks-firebase-adminsdk-gt9ix-7fedf47ff6.json")
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+/**
+* Update your Firebase Project
+* Credentials and Firebase Database
+* URL
+*/
+firebase.initializeApp({
+  serviceAccount: "./particle-webhooks-firebase-adminsdk-gt9ix-7fedf47ff6.json",
   databaseURL: "https://particle-webhooks.firebaseio.com"
-})*/
+});  //by adding your credentials, you get authorized to read and write from the database
 
-// Set the configuration for your app
-// TODO: Replace with your project's config object
-var config = {
-  apiKey: "apiKey",
-  authDomain: "projectId.firebaseapp.com",
-  databaseURL: "https://databaseName.firebaseio.com",
-  storageBucket: "bucket.appspot.com"
-};
 
-firebase.initializeApp(config);
-
-// Get a reference to the database service
-var database = firebase.database();
+/**
+* Loading Firebase Database and refering 
+* to user_data Object from the Database
+*/
+var db = firebase.database();
 
 app.use(bodyParser.json())
 
 app.post('/webhook', (req,res) => {
-  console.log("Webhook posted data: ", req.body);
-  database.ref('particle-webhooks/thunkable').set({
-    data: "Testing from node"
+  db.ref('particle-webhooks/payload').set({
+    data: req.body
   });
-})
+
+  res.json({ status: "ok"})
+});
 
 app.listen(port, err => {
   if (err) throw err
   console.log(`> Ready On Server http://localhost:${port}`)
-})
+});
