@@ -6,7 +6,7 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
-    "firebase-admin": "^6.5.0"
+    "firebase": "6.3.5"
   },
   "scripts": {
     "start": "node ."
